@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Valentine Galaxy</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+text-align:center;
+background:#ffe6f0;
+overflow:hidden;
+transition:1s;
+}
+
+/* FLOATING HEARTS */
+.hearts{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+overflow:hidden;
+z-index:-1;
+}
+.hearts span{
+position:absolute;
+font-size:24px;
+animation:float 12s linear infinite;
+opacity:0.4;
+}
+@keyframes float{
+from{transform:translateY(100vh);}
+to{transform:translateY(-10vh);}
+}
+
+button{
+padding:14px 26px;
+font-size:22px;
+margin:10px;
+border:none;
+border-radius:12px;
+cursor:pointer;
+}
+
+#yes{background:#ff4d88;color:white;font-size:24px;}
+#no{background:#999;color:white;}
+
+.msg{height:30px;color:#cc0066;font-size:18px;}
+
+.special{
+font-family:'Pacifico';
+font-size:30px;
+color:#ff4d88;
+cursor:pointer;
+}
+
+#question,#final,#gallery,#ending{display:none;}
+
+.photo{
+width:75%;
+max-width:600px;
+border-radius:20px;
+display:none;
+margin:auto;
+animation:zoom 5s linear;
+}
+@keyframes zoom{
+0%{transform:scale(1);}
+100%{transform:scale(1.15);}
+}
+
+/* envelope */
+.envelope{
+width:260px;height:170px;background:#ff4d88;
+margin:120px auto;border-radius:10px;
+position:relative;cursor:pointer;
+}
+.flap{
+width:0;height:0;border-left:130px solid transparent;
+border-right:130px solid transparent;
+border-bottom:85px solid #ff80aa;
+position:absolute;top:-85px;
+transition:1s;
+}
+.open .flap{transform:rotateX(180deg);}
+
+/* galaxy */
+.galaxy{
+background:radial-gradient(circle,#000010,#000000);
+color:white;
+}
+
+/* stars */
+.star{
+position:fixed;
+color:white;
+animation:twinkle 2s infinite alternate;
+}
+@keyframes twinkle{
+from{opacity:0.3;}
+to{opacity:1;}
+}
+
+/* stickers */
+.sticker{
+width:70px;
+animation:bounce 1s infinite;
+}
+@keyframes bounce{
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-12px);}
+}
+
+/* ending */
+.endline{
+display:none;
+font-family:'Pacifico';
+font-size:30px;
+color:#ff4d88;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- FLOATING HEARTS (used for first pages) -->
+<div class="hearts" id="hearts"></div>
+
+<audio id="music" loop>
+<source src="song.mp3.mpeg" type="audio/mpeg">
+</audio>
+
+<!-- envelope -->
+<div id="start">
+<div class="envelope" onclick="openEnvelope()" id="env">
+<div class="flap"></div>
+<p style="color:white;padding-top:60px;">Open Love Letter 💌</p>
+</div>
+</div>
+
+<!-- question -->
+<div id="question">
+<h1>
+<img src="bubu1.jpg" class="sticker">
+Bujjiii... Will you be my valentine 😍
+<img src="bubu3.jpg" class="sticker">
+</h1>
+
+<button id="yes" onclick="yesClick()">Yes ❤️</button>
+<button id="no" onclick="noClick()">No 😜</button>
+
+<div id="nomsg" class="msg"></div>
+</div>
+
+<!-- final -->
+<div id="final">
+<h1 style="font-family:Pacifico;">
+❤️ Be my Valentine Forever ❤️You don't have any option, I won't give you My Love❤️
+</h1>
+
+<p class="special" onclick="startPics()">
+I want to show you some special moments of us 💕
+</p>
+</div>
+
+<!-- gallery -->
+<div id="gallery">
+<img class="photo" src="pic1.jpeg">
+<img class="photo" src="pic2.jpeg">
+<img class="photo" src="pic3.jpeg">
+</div>
+
+<!-- ending -->
+<div id="ending">
+
+<div class="endline">
+<img src="bubu2.jpg" class="sticker">
+💍 I Love you forever my Bujji as Shohar jii ❤️
+<img src="bubu2.jpg" class="sticker">
+</div>
+
+<div class="endline">
+<img src="bubu4.jpg" class="sticker">
+💞 Manasa loves Saleem 💞
+<img src="bubu4.jpg" class="sticker">
+</div>
+
+<div class="endline">
+<img src="bubu5.jpg" class="sticker">
+🥺 When will I become Manasa Shaik...
+<img src="bubu5.jpg" class="sticker">
+</div>
+
+</div>
+
+<script>
+
+/* create floating hearts */
+for(let i=0;i<30;i++){
+let h=document.createElement("span");
+h.innerHTML="❤️";
+h.style.left=Math.random()*100+"vw";
+h.style.animationDuration=(8+Math.random()*6)+"s";
+document.getElementById("hearts").appendChild(h);
+}
+
+let msgs=[
+"Are you sure 😭",
+"Think again 😜",
+"Say yes please 🥺",
+"No escape 😂",
+"My heart crying 💔",
+"Only yes allowed 😈"
+];
+
+let count=0;
+
+function openEnvelope(){
+document.getElementById("env").classList.add("open");
+setTimeout(()=>{
+document.getElementById("start").style.display="none";
+document.getElementById("question").style.display="block";
+},1000);
+}
+
+function noClick(){
+document.getElementById("nomsg").innerText=msgs[count%msgs.length];
+count++;
+
+let yes=document.getElementById("yes");
+let size=parseInt(window.getComputedStyle(yes).fontSize);
+yes.style.fontSize=(size+5)+"px";
+}
+
+function yesClick(){
+document.getElementById("question").style.display="none";
+document.getElementById("final").style.display="block";
+document.getElementById("music").play();
+}
+
+function startPics(){
+
+document.body.classList.add("galaxy");
+document.getElementById("hearts").style.display="none";
+
+document.getElementById("final").style.display="none";
+document.getElementById("gallery").style.display="block";
+
+createStars();
+
+let pics=document.querySelectorAll(".photo");
+
+pics.forEach((pic,i)=>{
+setTimeout(()=>{
+pic.style.display="block";
+
+setTimeout(()=>{
+pic.style.display="none";
+
+if(i===pics.length-1){
+document.getElementById("gallery").style.display="none";
+startEnding();
+}
+
+},5000);
+
+},i*5000);
+});
+}
+
+function startEnding(){
+
+document.getElementById("ending").style.display="block";
+let lines=document.querySelectorAll(".endline");
+
+lines.forEach((line,i)=>{
+setTimeout(()=>{
+line.style.display="block";
+},i*5000);
+});
+}
+
+function createStars(){
+for(let i=0;i<60;i++){
+let s=document.createElement("div");
+s.className="star";
+s.innerHTML="✨";
+s.style.left=Math.random()*100+"vw";
+s.style.top=Math.random()*100+"vh";
+document.body.appendChild(s);
+}
+}
+
+</script>
+
+</body>
+</html>
